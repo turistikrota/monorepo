@@ -1,0 +1,136 @@
+:root {
+    --foreground-rgb: 0, 0, 0;
+    --blured-background-color: rgba(255,255,255,.7);
+    --default-background: #fff;
+    --loading-backdrop: brightness(0.9) blur(1px);
+  
+    --second-background-color: #f8f9fa;
+    --border-color: #f2f0f0;
+  
+    --shadow-color-start: rgba(0, 0, 0, 0.1);
+    --shadow-color-end: rgba(0, 0, 0, 0.6);
+  
+    --radius-base: 0.5rem;
+  
+    /* primary color */
+    --primary-color: 51, 151, 230;
+    --primary-color-50: 240, 248, 255;
+    --primary-color-100: 199, 225, 247;
+    --primary-color-200: 135, 206, 235;
+    --primary-color-300: 92, 175, 231;
+    --primary-color-400: 51, 151, 230;
+    --primary-color-500: 0, 119, 204;
+    --primary-color-600: 0, 107, 179;
+    --primary-color-700: 0, 90, 156;
+    --primary-color-800: 0, 77, 128;
+    --primary-color-900: 0, 61, 102;
+    --primary-color-1000: 0, 46, 77;
+    --primary-color-1100: 0, 34, 51;
+    --primary-color-1200: 0, 22, 38;
+    --primary-color-1300: 0, 11, 19;
+    --primary-color-1400: 0, 0, 0;
+  
+    /* secondary color */
+    --secondary-color: 255, 165, 0;
+    --secondary-color-50: 255, 248, 240;
+    --secondary-color-100: 254, 231, 195;
+    --secondary-color-200: 252, 217, 146;
+    --secondary-color-300: 255, 204, 102;
+    --secondary-color-400: 255, 165, 0;
+    --secondary-color-500: 255, 153, 0;
+    --secondary-color-600: 230, 138, 0;
+    --secondary-color-700: 204, 122, 0;
+    --secondary-color-800: 179, 107, 0;
+    --secondary-color-900: 143, 79, 0;
+    --secondary-color-1000: 102, 51, 0;
+    --secondary-color-1100: 77, 38, 0;
+    --secondary-color-1200: 51, 26, 0;
+    --secondary-color-1300: 38, 19, 0;
+    --secondary-color-1400: 26, 13, 0;
+  
+    --scroll-bar-bg: rgb(var(--primary-color-300));
+    --scroll-bar-bg-hover: rgb(var(--primary-color-400));
+    --scroll-bar-track: rgb(var(--primary-color-50));
+  
+    --progressbar-background: rgb(var(--primary-color-50));
+  
+    --autofill-background-color: rgb(var(--primary-color-100));
+    --autofill-color: rgb(var(--primary-color-900));
+    --preview-border-color: rgba(0, 0, 0, 0.25);
+  
+    --vip-border-image: linear-gradient(
+      to bottom,
+      rgba(var(--vip-color-300), 0.5) 10%,
+      rgba(var(--vip-color-500), 0.5) 70%
+    );
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --foreground-rgb: 255, 255, 255;
+      --default-background: #090909;
+      --second-background-color: #121212;
+      --blured-background-color: rgba(9, 9, 9, 0.7);
+      --border-color: #2a2a2a;
+  
+      --skeleton-default-color: 43, 42, 42;
+      --skeleton-color-50: 33, 33, 33;
+      --skeleton-color-100: 31, 31, 31;
+      --skeleton-color-200: 29, 29, 29;
+      --skeleton-color-300: 27, 27, 27;
+      --skeleton-color-400: 25, 25, 25;
+      --skeleton-color-500: 23, 23, 23;
+      --skeleton-color-600: 21, 21, 21;
+      --skeleton-color-700: 19, 19, 19;
+      --skeleton-color-800: 17, 17, 17;
+      --skeleton-color-900: 15, 15, 15;
+      --skeleton-color-1000: 13, 13, 13;
+      --skeleton-color-1100: 11, 11, 11;
+  
+      --loading-backdrop: brightness(0.5) blur(1px);
+  
+      --scroll-bar-bg: rgb(var(--primary-color-500));
+      --scroll-bar-bg-hover: rgb(var(--primary-color-600));
+      --scroll-bar-track: var(--background-color-end);
+  
+      --progressbar-background: rgb(var(--primary-color-1100));
+  
+      --shadow-color-start: rgba(255, 255, 255, 0.1);
+      --shadow-color-end: rgba(255, 255, 255, 0.6);
+      --preview-border-color: rgba(255, 255, 255, 0.25);
+  
+      --autofill-background-color: rgb(var(--primary-color-1000));
+      --autofill-color: rgb(var(--primary-color-50));
+    }
+  }
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: var(--default-background);
+    height: 100%;
+    min-height: 100vh;
+  }
+
+
+::-webkit-scrollbar,
+.scrollbar::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+
+::-webkit-scrollbar-thumb,
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-bg);
+  border-radius: 5px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+::-webkit-scrollbar-thumb:hover,
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-bar-bg-hover);
+}
+
+::-webkit-scrollbar-track,
+.scrollbar::-webkit-scrollbar-track {
+  background-color: var(--third-background-color);
+}
