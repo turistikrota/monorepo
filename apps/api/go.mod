@@ -3,6 +3,7 @@ module github.com/turistikrota/api
 go 1.22.0
 
 require (
+	github.com/9ssi7/slug v1.0.1
 	github.com/9ssi7/turnstile v1.0.0
 	github.com/9ssi7/txn v1.0.2
 	github.com/9ssi7/txn/txngorm v1.0.1
@@ -55,6 +56,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
+	github.com/paulmach/orb v0.11.1 // indirect
 	github.com/philhofer/fwd v1.1.2 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/tinylib/msgp v1.1.8 // indirect

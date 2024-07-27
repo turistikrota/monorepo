@@ -67,6 +67,9 @@ func (r *RC) SetData(data any) *RC {
 }
 
 func (r *RC) Error() string {
+	if r.err == nil {
+		return r.Message
+	}
 	return r.err.Error()
 }
 

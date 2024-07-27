@@ -1,7 +1,9 @@
 name: turistikrota
 services:
   db:
-    image: "postgres:14.5"
+    build:
+      context: ../apps/db
+      dockerfile: Dockerfile
     env_file:
       - .env
     volumes:

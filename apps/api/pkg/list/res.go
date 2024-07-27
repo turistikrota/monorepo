@@ -11,3 +11,14 @@ type PagiResponse[T any] struct {
 	TotalPage     int   `json:"total_page"`
 	List          []T   `json:"list"`
 }
+
+func NewPagiResponse[T any](req *PagiRequest, list []T, total int64, filteredTotal int64) *PagiResponse[T] {
+	return &PagiResponse[T]{
+		List:          list,
+		Total:         total,
+		Limit:         *req.Limit,
+		TotalPage:     req.TotalPage(filteredTotal),
+		FilteredTotal: filteredTotal,
+		Page:          *req.Page,
+	}
+}
