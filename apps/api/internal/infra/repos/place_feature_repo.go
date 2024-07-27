@@ -58,6 +58,11 @@ func (r *placeFeatureRepo) Filter(ctx context.Context, req *list.PagiRequest, fi
 			Values: []interface{}{"%" + filters.Search + "%"},
 			Skip:   filters.Search == "",
 		},
+		{
+			Key:    "is_active = ?",
+			Values: []interface{}{filters.IsActive == "1"},
+			Skip:   filters.IsActive == "",
+		},
 	}
 	res, err := query.RunList[*entities.PlaceFeature](r.adapter.GetCurrent(ctx), &entities.PlaceFeature{}, conds, req)
 	if err != nil {

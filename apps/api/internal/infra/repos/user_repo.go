@@ -55,6 +55,9 @@ func (r *userRepo) FindById(ctx context.Context, id uuid.UUID) (*entities.User, 
 func (r *userRepo) FindByEmail(ctx context.Context, email string) (*entities.User, error) {
 	var user entities.User
 	if err := r.adapter.GetCurrent(ctx).Model(&entities.User{}).Where("email = ?", email).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, rescode.AccountNotFound(err)
+		}
 		return nil, rescode.Failed(err)
 	}
 	return &user, nil

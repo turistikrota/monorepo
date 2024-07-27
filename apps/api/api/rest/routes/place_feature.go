@@ -12,7 +12,7 @@ import (
 )
 
 func PlaceFeature(router fiber.Router, srv restsrv.Srv, app app.App) {
-	group := router.Group("/place-feature")
+	group := router.Group("/place-features")
 	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureCreate(app)))
 	group.Put("/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureUpdate(app)))
 	group.Patch("/:feature_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureDisable(app)))

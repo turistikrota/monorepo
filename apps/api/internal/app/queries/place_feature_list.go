@@ -27,6 +27,7 @@ func NewPlaceFeatureListHandler(t trace.Tracer, v validation.Service, placeFeatu
 		if err != nil {
 			return nil, err
 		}
+		query.Filters.IsActive = "1" // Only active features for public view
 		res, err := placeFeatureRepo.Filter(ctx, &query.Pagi, &query.Filters)
 		if err != nil {
 			return nil, err

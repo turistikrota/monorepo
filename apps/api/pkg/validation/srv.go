@@ -2,6 +2,7 @@ package validation
 
 import (
 	"context"
+	"errors"
 	"strings"
 
 	"github.com/go-playground/locales/en"
@@ -40,7 +41,7 @@ func New() Service {
 
 // ValidateStruct validates the given struct.
 func (s *srv) ValidateStruct(ctx context.Context, sc interface{}) error {
-	var errors []*ErrorResponse
+	var errs []*ErrorResponse
 	translator := s.getTranslator(ctx)
 	err := s.validator.StructCtx(ctx, sc)
 	if err != nil {
@@ -53,18 +54,18 @@ func (s *srv) ValidateStruct(ctx context.Context, sc interface{}) error {
 			element.Field = err.Field()
 			element.Value = err.Value()
 			element.Message = err.Translate(translator)
-			errors = append(errors, &element)
+			errs = append(errs, &element)
 		}
 	}
-	if len(errors) > 0 {
-		return rescode.ValidationFailed(nil).SetData(errors)
+	if len(errs) > 0 {
+		return rescode.ValidationFailed(errors.New("validation error")).SetData(errs)
 	}
 	return nil
 }
 
 // ValidateMap validates the giveb struct.
 func (s *srv) ValidateMap(ctx context.Context, m map[string]interface{}, rules map[string]interface{}) error {
-	var errors []*ErrorResponse
+	var errs []*ErrorResponse
 	errMap := s.validator.ValidateMapCtx(ctx, m, rules)
 	translator := s.getTranslator(ctx)
 	for key, err := range errMap {
@@ -81,15 +82,15 @@ func (s *srv) ValidateMap(ctx context.Context, m map[string]interface{}, rules m
 				}
 				element.Value = err.Value()
 				element.Message = err.Translate(translator)
-				errors = append(errors, &element)
+				errs = append(errs, &element)
 			}
 			continue
 		}
 		element.Field = key
 		element.Value = m[key]
-		errors = append(errors, &element)
+		errs = append(errs, &element)
 	}
-	return rescode.ValidationFailed(nil).SetData(errors)
+	return rescode.ValidationFailed(errors.New("validation error")).SetData(errs)
 }
 
 func (s *srv) getTranslator(ctx context.Context) ut.Translator {
