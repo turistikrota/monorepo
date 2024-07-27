@@ -8,6 +8,7 @@ import (
 	restsrv "github.com/turistikrota/api/api/rest/srv"
 	"github.com/turistikrota/api/internal/app"
 	"github.com/turistikrota/api/internal/app/commands"
+	"github.com/turistikrota/api/internal/app/dtos"
 	"github.com/turistikrota/api/internal/app/queries"
 )
 
@@ -134,6 +135,25 @@ func authCheck(app app.App) fiber.Handler {
 
 func authCurrent(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		return c.Status(fiber.StatusOK).JSON(middlewares.AccessMustParse(c).User)
+		u := middlewares.AccessMustParse(c).User
+		res := dtos.CurrentUser{
+			Id:        u.Id.String(),
+			Name:      u.Name,
+			Email:     u.Email,
+			AllClaims: make([]string, 0),
+			Roles:     u.Roles,
+		}
+		if len(u.Roles) > 0 {
+			roles, err := app.Queries.RoleListIds(c.UserContext(), queries.RoleListIds{
+				Ids: u.Roles,
+			})
+			if err != nil {
+				return err
+			}
+			for _, r := range roles {
+				res.AllClaims = append(res.AllClaims, r.Claims...)
+			}
+		}
+		return c.Status(fiber.StatusOK).JSON(res)
 	}
 }

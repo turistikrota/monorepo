@@ -5,20 +5,20 @@ import (
 	"github.com/turistikrota/api/internal/infra/mail"
 )
 
-type AuthRegistered struct {
+type UserVerifyRequested struct {
 	Name             string
 	Email            string
 	VerificationCode string
 }
 
-func OnAuthRegistered(e AuthRegistered) {
+func OnUserVerifyRequested(e UserVerifyRequested) {
 	go func() {
 		mail.GetClient().SendWithTemplate(mail.SendWithTemplateConfig{
 			SendConfig: mail.SendConfig{
 				To:      []string{e.Email},
-				Subject: "Turistikrota'ya Hoşgeldiniz",
+				Subject: "Hesabınızı Yeniden Doğrulayın",
 			},
-			Template: assets.Templates.AuthRegistered,
+			Template: assets.Templates.AuthVerifyRequested,
 			Data: map[string]interface{}{
 				"Name":             e.Name,
 				"VerificationCode": e.VerificationCode,

@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/turistikrota/api/api/rest/middlewares"
 	restsrv "github.com/turistikrota/api/api/rest/srv"
+	"github.com/turistikrota/api/config/claims"
 	"github.com/turistikrota/api/internal/app"
 	"github.com/turistikrota/api/internal/app/commands"
 	"github.com/turistikrota/api/internal/app/queries"
@@ -13,13 +14,13 @@ import (
 
 func PlaceFeatures(router fiber.Router, srv restsrv.Srv, app app.App) {
 	group := router.Group("/place-features")
-	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureCreate(app)))
-	group.Put("/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureUpdate(app)))
-	group.Patch("/:feature_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureDisable(app)))
-	group.Patch("/:feature_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureEnable(app)))
+	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.Create), srv.Timeout(placeFeatureCreate(app)))
+	group.Put("/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.Update), srv.Timeout(placeFeatureUpdate(app)))
+	group.Patch("/:feature_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.Disable), srv.Timeout(placeFeatureDisable(app)))
+	group.Patch("/:feature_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.Enable), srv.Timeout(placeFeatureEnable(app)))
 	group.Get("/", srv.Timeout(placeFeatureList(app)))
-	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureAdminList(app)))
-	group.Get("/admin/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureAdminView(app)))
+	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.List), srv.Timeout(placeFeatureAdminList(app)))
+	group.Get("/admin/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.PlaceFeature.Super, claims.PlaceFeature.View), srv.Timeout(placeFeatureAdminView(app)))
 }
 
 func placeFeatureCreate(app app.App) fiber.Handler {

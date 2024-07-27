@@ -69,37 +69,37 @@ func (r *placeRepo) Filter(ctx context.Context, req *list.PagiRequest, filters *
 	conds := []query.Item{
 		{
 			Key:    "title ILIKE ?",
-			Values: []interface{}{"%" + filters.Search + "%"},
+			Values: query.V{"%" + filters.Search + "%"},
 			Skip:   filters.Search == "",
 		},
 		{
 			Key:    "is_payed = ?",
-			Values: []interface{}{filters.IsPayed == "1"},
+			Values: query.V{filters.IsPayed == "1"},
 			Skip:   filters.IsPayed == "",
 		},
 		{
 			Key:    "is_active = ?",
-			Values: []interface{}{filters.IsActive == "1"},
+			Values: query.V{filters.IsActive == "1"},
 			Skip:   filters.IsActive == "",
 		},
 		{
 			Key:    "kind = ?",
-			Values: []interface{}{filters.Kind},
+			Values: query.V{filters.Kind},
 			Skip:   filters.Kind == "",
 		},
 		{
 			Key:    "WHERE ST_DWithin(ST_MakePoint(longitude,latitude)::geography,ST_MakePoint(?, ?)::geography,?)",
-			Values: []interface{}{filters.Lng, filters.Lat, filters.Distance},
+			Values: query.V{filters.Lng, filters.Lat, filters.Distance},
 			Skip:   filters.Lat == "" || filters.Lng == "" || filters.Distance == "",
 		},
 		{
 			Key:    "min_time_spent >= ?",
-			Values: []interface{}{filters.MinTimeSpent},
+			Values: query.V{filters.MinTimeSpent},
 			Skip:   filters.MinTimeSpent == "",
 		},
 		{
 			Key:    "max_time_spent <= ?",
-			Values: []interface{}{filters.MaxTimeSpent},
+			Values: query.V{filters.MaxTimeSpent},
 			Skip:   filters.MaxTimeSpent == "",
 		},
 	}

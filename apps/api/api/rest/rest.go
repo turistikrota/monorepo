@@ -75,6 +75,8 @@ func (s srv) Listen() error {
 	routes.Auth(s.fiber, s.srv, s.app)
 	routes.Places(s.fiber, s.srv, s.app)
 	routes.PlaceFeatures(s.fiber, s.srv, s.app)
+	routes.Roles(s.fiber, s.srv, s.app)
+	routes.Users(s.fiber, s.srv, s.app)
 	return s.fiber.Listen(fmt.Sprintf("%v:%v", configs.Http.Host, configs.Http.Port))
 }
 

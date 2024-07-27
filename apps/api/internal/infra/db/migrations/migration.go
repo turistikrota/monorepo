@@ -6,5 +6,5 @@ import (
 )
 
 func Run(db *gorm.DB) {
-	db.AutoMigrate(&entities.User{}, &entities.PlaceFeature{}, &entities.Place{})
+	db.AutoMigrate(&entities.User{}, &entities.PlaceFeature{}, &entities.Place{}, &entities.Role{})
 }

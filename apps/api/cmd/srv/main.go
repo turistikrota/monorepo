@@ -74,6 +74,7 @@ func init() {
 		VerifyRepo:       repos.NewVerifyRepo(rdclient),
 		PlaceRepo:        repos.NewPlaceRepo(pgdb),
 		PlaceFeatureRepo: repos.NewPlaceFeatureRepo(pgdb),
+		RoleRepo:         repos.NewRoleRepo(pgdb),
 	}
 
 	valSrv = validation.New()

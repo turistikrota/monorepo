@@ -23,6 +23,18 @@ type Handlers struct {
 	PlaceUpdate  PlaceUpdateHandler
 	PlaceDisable PlaceDisableHandler
 	PlaceEnable  PlaceEnableHandler
+
+	RoleCreate  RoleCreateHandler
+	RoleUpdate  RoleUpdateHandler
+	RoleDisable RoleDisableHandler
+	RoleEnable  RoleEnableHandler
+
+	UserRoleAdd      UserRoleAddHandler
+	UserRoleRemove   UserRoleRemoveHandler
+	UserDisable      UserDisableHandler
+	UserEnable       UserEnableHandler
+	UserAdminDisable UserAdminDisableHandler
+	UserAdminEnable  UserAdminEnableHandler
 }
 
 func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Service) Handlers {
@@ -43,5 +55,17 @@ func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Serv
 		PlaceUpdate:  NewPlaceUpdateHandler(tracer, v, r.PlaceRepo),
 		PlaceDisable: NewPlaceDisableHandler(tracer, v, r.PlaceRepo),
 		PlaceEnable:  NewPlaceEnableHandler(tracer, v, r.PlaceRepo),
+
+		RoleCreate:  NewRoleCreateHandler(tracer, v, r.RoleRepo),
+		RoleUpdate:  NewRoleUpdateHandler(tracer, v, r.RoleRepo),
+		RoleDisable: NewRoleDisableHandler(tracer, v, r.RoleRepo),
+		RoleEnable:  NewRoleEnableHandler(tracer, v, r.RoleRepo),
+
+		UserRoleAdd:      NewUserRoleAddHandler(tracer, v, r.UserRepo, r.RoleRepo),
+		UserRoleRemove:   NewUserRoleRemoveHandler(tracer, v, r.UserRepo, r.RoleRepo),
+		UserDisable:      NewUserDisableHandler(tracer, r.UserRepo),
+		UserEnable:       NewUserEnableHandler(tracer, v, r.UserRepo),
+		UserAdminDisable: NewUserAdminDisableHandler(tracer, v, r.UserRepo),
+		UserAdminEnable:  NewUserAdminEnableHandler(tracer, v, r.UserRepo),
 	}
 }

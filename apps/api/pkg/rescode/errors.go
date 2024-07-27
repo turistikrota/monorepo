@@ -39,4 +39,19 @@ var (
 	AccountNotFound              = New(codeAccountNotFound, http.StatusNotFound, msgAccountNotFound)
 	AccountTransferToSameAccount = New(codeAccountTransferToSameAccount, http.StatusBadRequest, msgAccountTransferToSameAccount)
 	AccountCurrencyMismatch      = New(codeAccountCurrencyMismatch, http.StatusBadRequest, msgAccountCurrencyMismatch)
+
+	RoleIsLocked          = New(codeRoleIsLocked, http.StatusForbidden, msgRoleIsLocked)
+	ClaimIsNotReal        = New(codeClaimIsNotReal, http.StatusForbidden, msgClaimIsNotReal)
+	RoleNameAlreadyExists = New(codeRoleNameAlreadyExists, http.StatusConflict, msgRoleNameAlreadyExists, R{
+		"isExists": true,
+	})
+	RoleIsNotActive     = New(codeRoleIsNotActive, http.StatusForbidden, msgRoleIsNotActive)
+	RoleAlreadyAssigned = New(codeRoleAlreadyAssigned, http.StatusConflict, msgRoleAlreadyAssigned, R{
+		"isExists": true,
+	})
+	RoleIsNotAssigned = New(codeRoleIsNotAssigned, http.StatusForbidden, msgRoleIsNotAssigned)
+
+	OnlyAdminCanEnableUser = New(codeOnlyAdminCanEnableUser, http.StatusForbidden, msgOnlyAdminCanEnableUser)
+	UserAlreadyEnabled     = New(codeUserAlreadyEnabled, http.StatusConflict, msgUserAlreadyEnabled)
+	UserAlreadyDisabled    = New(codeUserAlreadyDisabled, http.StatusConflict, msgUserAlreadyDisabled)
 )
