@@ -36,6 +36,7 @@ func New() Service {
 	_ = v.RegisterValidation("currency", validateCurrency)
 	_ = v.RegisterValidation("amount", validateAmount)
 	_ = v.RegisterValidation("iban", validateIban)
+	_ = v.RegisterValidation("place_kind", validatePlaceKind)
 	return &srv{validator: v, uni: ut.New(tr.New(), en.New())}
 }
 

@@ -3,7 +3,6 @@ package entities
 import (
 	"github.com/9ssi7/slug"
 	"github.com/google/uuid"
-	"github.com/paulmach/orb"
 	"github.com/turistikrota/api/internal/domain/valobj"
 )
 
@@ -16,7 +15,8 @@ type Place struct {
 	Slug         string                          `json:"slug" gorm:"column:slug;type:varchar(255);not null"`
 	Kind         valobj.PlaceKind                `json:"kind" gorm:"type:varchar(255);not null"`
 	Seo          valobj.Seo                      `json:"seo" gorm:"column:seo;type:jsonb;not null"`
-	Point        orb.Point                       `json:"point" gorm:"type:geography(POINT,4326);not null"`
+	Latitude     float64                         `json:"latitude" gorm:"column:latitude;type:decimal;not null"`
+	Longitude    float64                         `json:"longitude" gorm:"column:longitude;type:decimal;not null"`
 	Images       valobj.JsonbArray[valobj.Image] `json:"images" gorm:"column:images;type:jsonb;not null"`
 	MinTimeSpent int16                           `json:"min_time_spent" gorm:"column:min_time_spent;type:smallint;not null"`
 	MaxTimeSpent int16                           `json:"max_time_spent" gorm:"column:max_time_spent;type:smallint;not null"`
@@ -34,14 +34,15 @@ func (p *Place) Disable(userId uuid.UUID) {
 	p.Audit.UpdatedBy = &userId
 }
 
-func (p *Place) Update(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, points []float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) {
+func (p *Place) Update(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, latitude float64, longitude float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) {
 	p.Slug = slug.New(seo.Title, slug.TR)
 	p.FeatureIds = valobj.UUIDArray(featureIds)
 	p.Title = title
 	p.Description = description
 	p.Kind = kind
 	p.Seo = seo
-	p.Point = orb.Point{points[0], points[1]}
+	p.Latitude = latitude
+	p.Longitude = longitude
 	p.Images = valobj.JsonbArray[valobj.Image](images)
 	p.MinTimeSpent = minTimeSpent
 	p.MaxTimeSpent = maxTimeSpent
@@ -49,7 +50,7 @@ func (p *Place) Update(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.Pl
 	p.Audit.UpdatedBy = &adminId
 }
 
-func NewPlace(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, points []float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) *Place {
+func NewPlace(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, latitude float64, longitude float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) *Place {
 	return &Place{
 		Audit: valobj.Audit{
 			MakedBy: &adminId,
@@ -60,7 +61,8 @@ func NewPlace(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, 
 		Slug:         slug.New(seo.Title, slug.TR),
 		Kind:         kind,
 		Seo:          seo,
-		Point:        orb.Point{points[0], points[1]},
+		Latitude:     latitude,
+		Longitude:    longitude,
 		Images:       valobj.JsonbArray[valobj.Image](images),
 		MinTimeSpent: minTimeSpent,
 		MaxTimeSpent: maxTimeSpent,

@@ -45,7 +45,10 @@ func (r *placeRepo) IsExistsBySlug(ctx context.Context, slug string) (bool, erro
 
 func (r *placeRepo) FindBySlug(ctx context.Context, slug string) (*entities.Place, error) {
 	var place entities.Place
-	if err := r.adapter.GetCurrent(ctx).Model(&entities.Place{}).Where("slug = ?", slug).First(&place).Error; err != nil {
+	if err := r.adapter.GetCurrent(ctx).Model(&entities.Place{}).Where("slug = ? AND is_active = ?", slug, true).First(&place).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, rescode.NotFound(err)
+		}
 		return nil, rescode.Failed(err)
 	}
 	return &place, nil
@@ -54,6 +57,9 @@ func (r *placeRepo) FindBySlug(ctx context.Context, slug string) (*entities.Plac
 func (r *placeRepo) FindById(ctx context.Context, id uuid.UUID) (*entities.Place, error) {
 	var place entities.Place
 	if err := r.adapter.GetCurrent(ctx).Model(&entities.Place{}).Where("id = ?", id).First(&place).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, rescode.NotFound(err)
+		}
 		return nil, rescode.Failed(err)
 	}
 	return &place, nil
@@ -82,7 +88,7 @@ func (r *placeRepo) Filter(ctx context.Context, req *list.PagiRequest, filters *
 			Skip:   filters.Kind == "",
 		},
 		{
-			Key:    "ST_DWithin(point, ST_MakePoint(?, ?)::geography, ?)",
+			Key:    "WHERE ST_DWithin(ST_MakePoint(longitude,latitude)::geography,ST_MakePoint(?, ?)::geography,?)",
 			Values: []interface{}{filters.Lng, filters.Lat, filters.Distance},
 			Skip:   filters.Lat == "" || filters.Lng == "" || filters.Distance == "",
 		},

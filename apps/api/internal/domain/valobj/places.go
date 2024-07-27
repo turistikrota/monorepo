@@ -5,6 +5,10 @@ package valobj
 // Enum: eating, coffee, bar, beach, amaze, shopping, transport, culture, nature, health, sport, nightlife, garden, temple, museum, antique, park, themePark, other
 type PlaceKind string
 
+func (e PlaceKind) String() string {
+	return string(e)
+}
+
 const (
 	PlaceKindEating    PlaceKind = "eating"
 	PlaceKindCoffee    PlaceKind = "coffee"

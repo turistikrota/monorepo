@@ -73,7 +73,8 @@ func (s srv) Listen() error {
 	s.fiber.Use(middlewares.Metric(requestDuration, requestCount, s.tracer))
 	s.fiber.Use(s.srv.DeviceId())
 	routes.Auth(s.fiber, s.srv, s.app)
-	routes.PlaceFeature(s.fiber, s.srv, s.app)
+	routes.Places(s.fiber, s.srv, s.app)
+	routes.PlaceFeatures(s.fiber, s.srv, s.app)
 	return s.fiber.Listen(fmt.Sprintf("%v:%v", configs.Http.Host, configs.Http.Port))
 }
 

@@ -14,7 +14,8 @@ type PlaceList struct {
 	FeatureIds   []string         `json:"feature_ids"`
 	Slug         string           `json:"slug"`
 	Kind         valobj.PlaceKind `json:"kind"`
-	Point        []float64        `json:"point"`
+	Latitude     float64          `json:"latitude"`
+	Longitude    float64          `json:"longitude"`
 	Images       []*valobj.Image  `json:"images"`
 	MinTimeSpent int16            `json:"min_time_spent"`
 	MaxTimeSpent int16            `json:"max_time_spent"`
@@ -28,7 +29,8 @@ type PlaceView struct {
 	Slug         string           `json:"slug"`
 	Seo          valobj.Seo       `json:"seo"`
 	Kind         valobj.PlaceKind `json:"kind"`
-	Point        []float64        `json:"point"`
+	Latitude     float64          `json:"latitude"`
+	Longitude    float64          `json:"longitude"`
 	Images       []*valobj.Image  `json:"images"`
 	MinTimeSpent int16            `json:"min_time_spent"`
 	MaxTimeSpent int16            `json:"max_time_spent"`
@@ -42,7 +44,8 @@ type PlaceAdminList struct {
 	FeatureIds   []string         `json:"feature_ids"`
 	Slug         string           `json:"slug"`
 	Kind         valobj.PlaceKind `json:"kind"`
-	Point        []float64        `json:"point"`
+	Latitude     float64          `json:"latitude"`
+	Longitude    float64          `json:"longitude"`
 	Images       []*valobj.Image  `json:"images"`
 	MinTimeSpent int16            `json:"min_time_spent"`
 	MaxTimeSpent int16            `json:"max_time_spent"`
@@ -60,7 +63,8 @@ func NewPlaceList(res *list.PagiResponse[*entities.Place]) *list.PagiResponse[*P
 			FeatureIds:   item.FeatureIds.ToStringArray(),
 			Slug:         item.Slug,
 			Kind:         item.Kind,
-			Point:        []float64{item.Point.Lat(), item.Point.Lon()},
+			Latitude:     item.Latitude,
+			Longitude:    item.Longitude,
 			Images:       item.Images,
 			MinTimeSpent: item.MinTimeSpent,
 			MaxTimeSpent: item.MaxTimeSpent,
@@ -85,7 +89,8 @@ func NewPlaceView(item *entities.Place) *PlaceView {
 		Slug:         item.Slug,
 		Seo:          item.Seo,
 		Kind:         item.Kind,
-		Point:        []float64{item.Point.Lat(), item.Point.Lon()},
+		Latitude:     item.Latitude,
+		Longitude:    item.Longitude,
 		Images:       item.Images,
 		MinTimeSpent: item.MinTimeSpent,
 		MaxTimeSpent: item.MaxTimeSpent,
@@ -103,7 +108,8 @@ func NewPlaceAdminList(res *list.PagiResponse[*entities.Place]) *list.PagiRespon
 			FeatureIds:   item.FeatureIds.ToStringArray(),
 			Slug:         item.Slug,
 			Kind:         item.Kind,
-			Point:        []float64{item.Point.Lat(), item.Point.Lon()},
+			Latitude:     item.Latitude,
+			Longitude:    item.Longitude,
 			Images:       item.Images,
 			MinTimeSpent: item.MinTimeSpent,
 			MaxTimeSpent: item.MaxTimeSpent,

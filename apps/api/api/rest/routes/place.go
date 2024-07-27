@@ -11,25 +11,26 @@ import (
 	"github.com/turistikrota/api/pkg/list"
 )
 
-func PlaceFeatures(router fiber.Router, srv restsrv.Srv, app app.App) {
-	group := router.Group("/place-features")
-	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureCreate(app)))
-	group.Put("/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureUpdate(app)))
-	group.Patch("/:feature_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureDisable(app)))
-	group.Patch("/:feature_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureEnable(app)))
-	group.Get("/", srv.Timeout(placeFeatureList(app)))
-	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureAdminList(app)))
-	group.Get("/admin/:feature_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeFeatureAdminView(app)))
+func Places(router fiber.Router, srv restsrv.Srv, app app.App) {
+	group := router.Group("/places")
+	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeCreate(app)))
+	group.Put("/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeUpdate(app)))
+	group.Patch("/:place_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeDisable(app)))
+	group.Patch("/:place_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeEnable(app)))
+	group.Get("/", srv.Timeout(placeList(app)))
+	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeAdminList(app)))
+	group.Get("/admin/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeAdminView(app)))
+	group.Get("/:slug", srv.Timeout(placeView(app)))
 }
 
-func placeFeatureCreate(app app.App) fiber.Handler {
+func placeCreate(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var cmd commands.PlaceFeatureCreate
+		var cmd commands.PlaceCreate
 		if err := c.BodyParser(&cmd); err != nil {
 			return err
 		}
 		cmd.UserId = middlewares.AccessParse(c).Id
-		res, err := app.Commands.PlaceFeatureCreate(c.UserContext(), cmd)
+		res, err := app.Commands.PlaceCreate(c.UserContext(), cmd)
 		if err != nil {
 			return err
 		}
@@ -37,9 +38,9 @@ func placeFeatureCreate(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureUpdate(app app.App) fiber.Handler {
+func placeUpdate(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var cmd commands.PlaceFeatureUpdate
+		var cmd commands.PlaceUpdate
 		if err := c.ParamsParser(&cmd); err != nil {
 			return err
 		}
@@ -47,7 +48,7 @@ func placeFeatureUpdate(app app.App) fiber.Handler {
 			return err
 		}
 		cmd.UserId = middlewares.AccessParse(c).Id
-		res, err := app.Commands.PlaceFeatureUpdate(c.UserContext(), cmd)
+		res, err := app.Commands.PlaceUpdate(c.UserContext(), cmd)
 		if err != nil {
 			return err
 		}
@@ -55,14 +56,14 @@ func placeFeatureUpdate(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureDisable(app app.App) fiber.Handler {
+func placeDisable(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var cmd commands.PlaceFeatureDisable
+		var cmd commands.PlaceDisable
 		if err := c.ParamsParser(&cmd); err != nil {
 			return err
 		}
 		cmd.UserId = middlewares.AccessParse(c).Id
-		res, err := app.Commands.PlaceFeatureDisable(c.UserContext(), cmd)
+		res, err := app.Commands.PlaceDisable(c.UserContext(), cmd)
 		if err != nil {
 			return err
 		}
@@ -70,14 +71,14 @@ func placeFeatureDisable(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureEnable(app app.App) fiber.Handler {
+func placeEnable(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var cmd commands.PlaceFeatureEnable
+		var cmd commands.PlaceEnable
 		if err := c.ParamsParser(&cmd); err != nil {
 			return err
 		}
 		cmd.UserId = middlewares.AccessParse(c).Id
-		res, err := app.Commands.PlaceFeatureEnable(c.UserContext(), cmd)
+		res, err := app.Commands.PlaceEnable(c.UserContext(), cmd)
 		if err != nil {
 			return err
 		}
@@ -85,22 +86,22 @@ func placeFeatureEnable(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureList(app app.App) fiber.Handler {
+func placeList(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var pagi list.PagiRequest
 		if err := c.QueryParser(&pagi); err != nil {
 			return err
 		}
-		var filters valobj.BaseFilters
+		var filters valobj.PlaceFilters
 		if err := c.QueryParser(&filters); err != nil {
 			return err
 		}
 		pagi.Default()
-		query := queries.PlaceFeatureList{
+		query := queries.PlaceList{
 			Pagi:    pagi,
 			Filters: filters,
 		}
-		res, err := app.Queries.PlaceFeatureList(c.UserContext(), query)
+		res, err := app.Queries.PlaceList(c.UserContext(), query)
 		if err != nil {
 			return err
 		}
@@ -108,22 +109,22 @@ func placeFeatureList(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureAdminList(app app.App) fiber.Handler {
+func placeAdminList(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var pagi list.PagiRequest
 		if err := c.QueryParser(&pagi); err != nil {
 			return err
 		}
-		var filters valobj.BaseFilters
+		var filters valobj.PlaceFilters
 		if err := c.QueryParser(&filters); err != nil {
 			return err
 		}
 		pagi.Default()
-		query := queries.PlaceFeatureAdminList{
+		query := queries.PlaceAdminList{
 			Pagi:    pagi,
 			Filters: filters,
 		}
-		res, err := app.Queries.PlaceFeatureAdminList(c.UserContext(), query)
+		res, err := app.Queries.PlaceAdminList(c.UserContext(), query)
 		if err != nil {
 			return err
 		}
@@ -131,13 +132,27 @@ func placeFeatureAdminList(app app.App) fiber.Handler {
 	}
 }
 
-func placeFeatureAdminView(app app.App) fiber.Handler {
+func placeAdminView(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var query queries.PlaceFeatureAdminView
+		var query queries.PlaceAdminView
 		if err := c.ParamsParser(&query); err != nil {
 			return err
 		}
-		res, err := app.Queries.PlaceFeatureAdminView(c.UserContext(), query)
+		res, err := app.Queries.PlaceAdminView(c.UserContext(), query)
+		if err != nil {
+			return err
+		}
+		return c.Status(fiber.StatusOK).JSON(res)
+	}
+}
+
+func placeView(app app.App) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		var query queries.PlaceView
+		if err := c.ParamsParser(&query); err != nil {
+			return err
+		}
+		res, err := app.Queries.PlaceView(c.UserContext(), query)
 		if err != nil {
 			return err
 		}
