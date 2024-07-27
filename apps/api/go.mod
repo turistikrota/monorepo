@@ -17,7 +17,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/lib/pq v1.10.9
 	github.com/mileusna/useragent v1.3.4
-	github.com/redis/go-redis/v9 v9.6.0
+	github.com/redis/go-redis/v9 v9.6.1
 	github.com/shopspring/decimal v1.4.0
 	github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.1
 	github.com/xhit/go-simple-mail/v2 v2.16.0
