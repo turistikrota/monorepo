@@ -23,6 +23,11 @@ type Handlers struct {
 	PlaceUpdate  PlaceUpdateHandler
 	PlaceDisable PlaceDisableHandler
 	PlaceEnable  PlaceEnableHandler
+
+	RoleCreate  RoleCreateHandler
+	RoleUpdate  RoleUpdateHandler
+	RoleDisable RoleDisableHandler
+	RoleEnable  RoleEnableHandler
 }
 
 func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Service) Handlers {
@@ -43,5 +48,10 @@ func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Serv
 		PlaceUpdate:  NewPlaceUpdateHandler(tracer, v, r.PlaceRepo),
 		PlaceDisable: NewPlaceDisableHandler(tracer, v, r.PlaceRepo),
 		PlaceEnable:  NewPlaceEnableHandler(tracer, v, r.PlaceRepo),
+
+		RoleCreate:  NewRoleCreateHandler(tracer, v, r.RoleRepo),
+		RoleUpdate:  NewRoleUpdateHandler(tracer, v, r.RoleRepo),
+		RoleDisable: NewRoleDisableHandler(tracer, v, r.RoleRepo),
+		RoleEnable:  NewRoleEnableHandler(tracer, v, r.RoleRepo),
 	}
 }

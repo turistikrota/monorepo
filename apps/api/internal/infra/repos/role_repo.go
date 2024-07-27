@@ -46,6 +46,14 @@ func (r *roleRepo) FindById(ctx context.Context, id uuid.UUID) (*entities.Role, 
 	return &role, nil
 }
 
+func (r *roleRepo) FindByIds(ctx context.Context, ids []uuid.UUID) ([]*entities.Role, error) {
+	var roles []*entities.Role
+	if err := r.adapter.GetCurrent(ctx).Model(&entities.Role{}).Where("id IN (?) AND is_active = ?", ids, true).Find(&roles).Error; err != nil {
+		return nil, err
+	}
+	return roles, nil
+}
+
 func (r *roleRepo) Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.Role], error) {
 	conds := []query.Item{
 		{

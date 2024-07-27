@@ -39,4 +39,6 @@ var (
 	AccountNotFound              = New(codeAccountNotFound, http.StatusNotFound, msgAccountNotFound)
 	AccountTransferToSameAccount = New(codeAccountTransferToSameAccount, http.StatusBadRequest, msgAccountTransferToSameAccount)
 	AccountCurrencyMismatch      = New(codeAccountCurrencyMismatch, http.StatusBadRequest, msgAccountCurrencyMismatch)
+
+	RoleIsLocked = New(codeRoleIsLocked, http.StatusForbidden, msgRoleIsLocked)
 )

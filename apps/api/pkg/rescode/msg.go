@@ -30,4 +30,6 @@ const (
 	msgAccountNotFound              string = "account_not_found"
 	msgAccountTransferToSameAccount string = "account_transfer_to_same_account"
 	msgAccountCurrencyMismatch      string = "account_currency_mismatch"
+
+	msgRoleIsLocked string = "role_is_locked"
 )

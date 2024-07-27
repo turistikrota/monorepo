@@ -30,4 +30,6 @@ const (
 	codeAccountNotFound              uint64 = 4002
 	codeAccountTransferToSameAccount uint64 = 4003
 	codeAccountCurrencyMismatch      uint64 = 4004
+
+	codeRoleIsLocked uint64 = 5000
 )
