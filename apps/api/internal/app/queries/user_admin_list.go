@@ -20,14 +20,14 @@ type UserAdminList struct {
 
 type UserAdminListHandler cqrs.HandlerFunc[UserAdminList, *list.PagiResponse[*dtos.UserAdminList]]
 
-func NewUserAdminListHandler(t trace.Tracer, v validation.Service, roleRepo abstracts.UserRepo) UserAdminListHandler {
+func NewUserAdminListHandler(t trace.Tracer, v validation.Service, userRepo abstracts.UserRepo) UserAdminListHandler {
 	return func(ctx context.Context, query UserAdminList) (*list.PagiResponse[*dtos.UserAdminList], error) {
 		ctx = tracer.Push(ctx, t, "queries.UserAdminListHandler")
 		err := v.ValidateStruct(ctx, query)
 		if err != nil {
 			return nil, err
 		}
-		res, err := roleRepo.Filter(ctx, &query.Pagi, &query.Filters)
+		res, err := userRepo.Filter(ctx, &query.Pagi, &query.Filters)
 		if err != nil {
 			return nil, err
 		}

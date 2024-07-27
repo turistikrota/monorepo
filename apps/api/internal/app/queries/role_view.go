@@ -18,14 +18,14 @@ type RoleView struct {
 
 type RoleViewHandler cqrs.HandlerFunc[RoleView, *entities.Role]
 
-func NewRoleViewHandler(t trace.Tracer, v validation.Service, placeRepo abstracts.RoleRepo) RoleViewHandler {
+func NewRoleViewHandler(t trace.Tracer, v validation.Service, roleRepo abstracts.RoleRepo) RoleViewHandler {
 	return func(ctx context.Context, query RoleView) (*entities.Role, error) {
 		ctx = tracer.Push(ctx, t, "queries.RoleViewHandler")
 		err := v.ValidateStruct(ctx, query)
 		if err != nil {
 			return nil, err
 		}
-		res, err := placeRepo.FindById(ctx, query.Id)
+		res, err := roleRepo.FindById(ctx, query.Id)
 		if err != nil {
 			return nil, err
 		}

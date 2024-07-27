@@ -20,8 +20,8 @@ func OnUserVerifyRequested(e UserVerifyRequested) {
 			},
 			Template: assets.Templates.AuthVerifyRequested,
 			Data: map[string]interface{}{
-				"Name":            e.Name,
-				"VerificationUrl": e.VerificationCode,
+				"Name":             e.Name,
+				"VerificationCode": e.VerificationCode,
 			},
 		})
 	}()

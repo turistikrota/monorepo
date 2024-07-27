@@ -18,10 +18,10 @@ func Users(router fiber.Router, srv restsrv.Srv, app app.App) {
 	group.Patch("/enable", srv.Turnstile(), srv.Timeout(userEnable(app)))
 	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.List), srv.Timeout(userAdminList(app)))
 	group.Get("/admin/:user_id", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.View), srv.Timeout(userAdminView(app)))
-	group.Patch("/:user_id/role-add", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.RoleAdd), srv.Timeout(userRoleAdd(app)))
-	group.Patch("/:user_id/role-remove", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.RoleRemove), srv.Timeout(userRoleRemove(app)))
-	group.Patch("/:user_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.Disable), srv.Timeout(userAdminDisable(app)))
-	group.Patch("/:user_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Role.Super, claims.User.Enable), srv.Timeout(userAdminEnable(app)))
+	group.Patch("/admin/:user_id/role-add", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.RoleAdd), srv.Timeout(userRoleAdd(app)))
+	group.Patch("/admin/:user_id/role-remove", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.RoleRemove), srv.Timeout(userRoleRemove(app)))
+	group.Patch("/admin/:user_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.User.Super, claims.User.Disable), srv.Timeout(userAdminDisable(app)))
+	group.Patch("/admin/:user_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Role.Super, claims.User.Enable), srv.Timeout(userAdminEnable(app)))
 }
 
 func userAdminDisable(app app.App) fiber.Handler {
@@ -63,6 +63,14 @@ func userDisable(app app.App) fiber.Handler {
 		if err != nil {
 			return err
 		}
+		_, err = app.Commands.AuthLogout(c.UserContext(), commands.AuthLogout{
+			UserId: middlewares.AccessMustParse(c).Id,
+		})
+		if err != nil {
+			return err
+		}
+		middlewares.AccessTokenRemoveCookie(c)
+		middlewares.RefreshTokenRemoveCookie(c)
 		return c.Status(fiber.StatusOK).JSON(res)
 	}
 }
@@ -84,6 +92,9 @@ func userEnable(app app.App) fiber.Handler {
 func userRoleAdd(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var cmd commands.UserRoleAdd
+		if err := c.ParamsParser(&cmd); err != nil {
+			return err
+		}
 		if err := c.BodyParser(&cmd); err != nil {
 			return err
 		}
@@ -99,6 +110,9 @@ func userRoleAdd(app app.App) fiber.Handler {
 func userRoleRemove(app app.App) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var cmd commands.UserRoleRemove
+		if err := c.ParamsParser(&cmd); err != nil {
+			return err
+		}
 		if err := c.BodyParser(&cmd); err != nil {
 			return err
 		}

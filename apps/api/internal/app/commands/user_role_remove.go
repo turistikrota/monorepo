@@ -16,7 +16,7 @@ import (
 
 type UserRoleRemove struct {
 	CurrentUserId uuid.UUID `json:"-" validate:"-"`
-	UserId        uuid.UUID `json:"user_id" validate:"required,uuid"`
+	UserId        uuid.UUID `params:"user_id" validate:"required,uuid"`
 	RoleId        uuid.UUID `json:"role_id" validate:"required,uuid"`
 }
 

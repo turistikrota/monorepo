@@ -53,7 +53,8 @@ func (u *User) Verify() {
 func (u *User) UnVerify() {
 	u.VerifiedAt = nil
 	u.IsActive = false
-	u.TempToken = ptr.String(uuid.New().String())
+	u.TempToken = new(string)
+	*u.TempToken = uuid.New().String()
 }
 
 func (u *User) Enable(userId uuid.UUID) {

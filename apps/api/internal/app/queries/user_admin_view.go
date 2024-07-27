@@ -13,19 +13,19 @@ import (
 )
 
 type UserAdminView struct {
-	Id uuid.UUID `json:"role_id" params:"role_id" validate:"required,uuid"`
+	Id uuid.UUID `json:"user_id" params:"user_id" validate:"required,uuid"`
 }
 
 type UserAdminViewHandler cqrs.HandlerFunc[UserAdminView, *entities.User]
 
-func NewUserAdminViewHandler(t trace.Tracer, v validation.Service, user abstracts.UserRepo) UserAdminViewHandler {
+func NewUserAdminViewHandler(t trace.Tracer, v validation.Service, userRepo abstracts.UserRepo) UserAdminViewHandler {
 	return func(ctx context.Context, query UserAdminView) (*entities.User, error) {
 		ctx = tracer.Push(ctx, t, "queries.UserAdminViewHandler")
 		err := v.ValidateStruct(ctx, query)
 		if err != nil {
 			return nil, err
 		}
-		res, err := user.FindById(ctx, query.Id)
+		res, err := userRepo.FindById(ctx, query.Id)
 		if err != nil {
 			return nil, err
 		}

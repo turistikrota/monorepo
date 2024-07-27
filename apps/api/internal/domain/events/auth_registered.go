@@ -20,8 +20,8 @@ func OnAuthRegistered(e AuthRegistered) {
 			},
 			Template: assets.Templates.AuthRegistered,
 			Data: map[string]interface{}{
-				"Name":            e.Name,
-				"VerificationUrl": e.VerificationCode,
+				"Name":             e.Name,
+				"VerificationCode": e.VerificationCode,
 			},
 		})
 	}()
