@@ -16,7 +16,7 @@ import (
 
 type UserAdminEnable struct {
 	CurrentUserId uuid.UUID `json:"-" validate:"-"`
-	UserId        uuid.UUID `json:"user_id" validate:"required,uuid"`
+	UserId        uuid.UUID `json:"user_id" params:"user_id" validate:"required,uuid"`
 }
 
 type UserAdminEnableHandler cqrs.HandlerFunc[UserAdminEnable, *cqrs.Empty]

@@ -23,6 +23,9 @@ type Handlers struct {
 	RoleList    RoleListHandler
 	RoleListIds RoleListIdsHandler
 	RoleView    RoleViewHandler
+
+	UserAdminList UserAdminListHandler
+	UserAdminView UserAdminViewHandler
 }
 
 func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Service) Handlers {
@@ -43,5 +46,8 @@ func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Serv
 		RoleList:    NewRoleListHandler(tracer, v, r.RoleRepo),
 		RoleListIds: NewRoleListIdsHandler(tracer, v, r.RoleRepo),
 		RoleView:    NewRoleViewHandler(tracer, v, r.RoleRepo),
+
+		UserAdminList: NewUserAdminListHandler(tracer, v, r.UserRepo),
+		UserAdminView: NewUserAdminViewHandler(tracer, v, r.UserRepo),
 	}
 }

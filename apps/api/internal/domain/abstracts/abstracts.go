@@ -53,7 +53,7 @@ type UserRepo interface {
 	FindById(ctx context.Context, id uuid.UUID) (*entities.User, error)
 	FindByEmail(ctx context.Context, email string) (*entities.User, error)
 	FindByPhone(ctx context.Context, phone string) (*entities.User, error)
-	Filter(ctx context.Context, req *list.PagiRequest, search string, isActive string) (*list.PagiResponse[*entities.User], error)
+	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.User], error)
 }
 
 type SessionRepo interface {

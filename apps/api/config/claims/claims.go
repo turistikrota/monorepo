@@ -30,6 +30,16 @@ type placeFeatureClaims struct {
 	List    string
 }
 
+type userClaims struct {
+	Super      string
+	Disable    string
+	Enable     string
+	List       string
+	View       string
+	RoleAdd    string
+	RoleRemove string
+}
+
 var (
 	Admin      string = "admin"
 	AdminSuper string = "admin_super"
@@ -62,6 +72,16 @@ var (
 		Disable: "place_feature_disable",
 		View:    "place_feature_view",
 		List:    "place_feature_list",
+	}
+
+	User = userClaims{
+		Super:      "user_super",
+		Disable:    "user_disable",
+		Enable:     "user_enable",
+		List:       "user_list",
+		View:       "user_view",
+		RoleAdd:    "user_role_add",
+		RoleRemove: "user_role_remove",
 	}
 )
 

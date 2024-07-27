@@ -6,7 +6,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/turistikrota/api/internal/domain/abstracts"
 	"github.com/turistikrota/api/internal/domain/entities"
+	"github.com/turistikrota/api/internal/domain/valobj"
 	"github.com/turistikrota/api/pkg/list"
+	"github.com/turistikrota/api/pkg/query"
 	"github.com/turistikrota/api/pkg/rescode"
 	"gorm.io/gorm"
 )
@@ -79,25 +81,22 @@ func (r *userRepo) FindByPhone(ctx context.Context, phone string) (*entities.Use
 	return &user, nil
 }
 
-func (r *userRepo) Filter(ctx context.Context, req *list.PagiRequest, search string, isActive string) (*list.PagiResponse[*entities.User], error) {
-	var users []*entities.User
-	query := r.adapter.GetCurrent(ctx).Model(&entities.User{})
-	var total int64
-	if err := query.Count(&total).Error; err != nil {
+func (r *userRepo) Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.User], error) {
+	conds := []query.Item{
+		{
+			Key:    "title ILIKE ?",
+			Values: query.V{"%" + filters.Search + "%"},
+			Skip:   filters.Search == "",
+		},
+		{
+			Key:    "is_active = ?",
+			Values: query.V{filters.IsActive == "1"},
+			Skip:   filters.IsActive == "",
+		},
+	}
+	res, err := query.RunList[*entities.User](r.adapter.GetCurrent(ctx), &entities.User{}, conds, req)
+	if err != nil {
 		return nil, rescode.Failed(err)
 	}
-	if search != "" {
-		query = query.Where("name LIKE ? OR email LIKE ?", "%"+search+"%", "%"+search+"%")
-	}
-	if isActive != "" {
-		query = query.Where("is_active = ?", isActive)
-	}
-	var filteredTotal int64
-	if err := query.Count(&filteredTotal).Error; err != nil {
-		return nil, rescode.Failed(err)
-	}
-	if err := query.Limit(*req.Limit).Offset(req.Offset()).Find(&users).Error; err != nil {
-		return nil, rescode.Failed(err)
-	}
-	return list.NewPagiResponse(req, users, total, filteredTotal), nil
+	return res, nil
 }
