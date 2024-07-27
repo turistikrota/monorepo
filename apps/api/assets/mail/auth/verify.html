@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doğrulama Kodu</title>
+    <style>
+      body,
+      div,
+      p,
+      a,
+      img,
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-family: Arial, sans-serif;
+        vertical-align: baseline;
+        line-height: 1.5;
+      }
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100% !important;
+        }
+        .content {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body style="background-color: #f8f8f8">
+    <div class="container" style="max-width: 600px; margin: 0 auto">
+      <div
+        class="content"
+        style="
+          padding: 40px;
+          padding-top: 20px;
+          background-color: #ffffff;
+          border-top: 10px solid #3b82f6;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        "
+      >
+      <div class="logo" style="text-align: left">
+        <img
+          src="https://s3.turistikrota.com/logo/horizontal.png"
+          alt="Logo"
+          style="max-width: 200px"
+        />
+      </div>
+        <p style="margin-top: 20px; margin-bottom: 20px">Merhaba,</p>
+        <p>
+            Aşağıdaki 4 haneli kodu kullanarak giriş yapabilirsiniz.
+        </p>
+        <h3
+          style="
+            text-align: center;
+            font-size: 32px;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            letter-spacing: 10px;
+          "
+        >
+          {{ .Code }}
+        </h3>
+        <p>
+          Yetkilendirilmeye çalışılan oturum bilgisi:
+        </p>
+        <table style="width: 100%; margin-top: 20px">
+          <tr>
+            <td style="padding: 5px 0">IP Adresi:</td>
+            <td style="padding: 5px 0">{{ .IP }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0">Tarayıcı:</td>
+            <td style="padding: 5px 0">{{ .Browser }}</td>
+          </tr>
+          <tr>
+            <td style="padding: 5px 0">İşletim Sistemi:</td>
+            <td style="padding: 5px 0">{{ .OS }}</td>
+          </tr>
+        </table>
+        <p style="margin-top: 20px">
+            Bir şüpheniz varsa, lütfen bu e-postayı dikkate almayın.
+        </p>
+      </div>
+    </div>
+    <div
+      class="footer"
+      style="text-align: center; font-size: 12px; padding: 20px"
+    >
+      <p>© 2024 Turistikrota. Tüm hakları saklıdır.</p>
+    </div>
+  </body>
+</html>
