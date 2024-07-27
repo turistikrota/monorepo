@@ -34,4 +34,11 @@ const (
 	msgRoleIsLocked          string = "role_is_locked"
 	msgClaimIsNotReal        string = "claim_is_not_real"
 	msgRoleNameAlreadyExists string = "role_name_already_exists"
+	msgRoleIsNotActive       string = "role_is_not_active"
+	msgRoleAlreadyAssigned   string = "role_already_assigned"
+	msgRoleIsNotAssigned     string = "role_is_not_assigned"
+
+	msgOnlyAdminCanEnableUser string = "only_admin_can_enable_user"
+	msgUserAlreadyEnabled     string = "user_already_enabled"
+	msgUserAlreadyDisabled    string = "user_already_disabled"
 )

@@ -45,4 +45,13 @@ var (
 	RoleNameAlreadyExists = New(codeRoleNameAlreadyExists, http.StatusConflict, msgRoleNameAlreadyExists, R{
 		"isExists": true,
 	})
+	RoleIsNotActive     = New(codeRoleIsNotActive, http.StatusForbidden, msgRoleIsNotActive)
+	RoleAlreadyAssigned = New(codeRoleAlreadyAssigned, http.StatusConflict, msgRoleAlreadyAssigned, R{
+		"isExists": true,
+	})
+	RoleIsNotAssigned = New(codeRoleIsNotAssigned, http.StatusForbidden, msgRoleIsNotAssigned)
+
+	OnlyAdminCanEnableUser = New(codeOnlyAdminCanEnableUser, http.StatusForbidden, msgOnlyAdminCanEnableUser)
+	UserAlreadyEnabled     = New(codeUserAlreadyEnabled, http.StatusConflict, msgUserAlreadyEnabled)
+	UserAlreadyDisabled    = New(codeUserAlreadyDisabled, http.StatusConflict, msgUserAlreadyDisabled)
 )

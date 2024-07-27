@@ -10,11 +10,13 @@ func EmbedMailTemplate() embed.FS {
 }
 
 type templates struct {
-	AuthRegistered string
-	AuthVerify     string
+	AuthRegistered      string
+	AuthVerify          string
+	AuthVerifyRequested string
 }
 
 var Templates = templates{
-	AuthRegistered: "auth/registered",
-	AuthVerify:     "auth/verify",
+	AuthRegistered:      "auth/registered",
+	AuthVerify:          "auth/verify",
+	AuthVerifyRequested: "auth/verify_requested",
 }

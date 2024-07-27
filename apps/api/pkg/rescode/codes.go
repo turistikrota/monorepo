@@ -34,4 +34,11 @@ const (
 	codeRoleIsLocked          uint64 = 5000
 	codeClaimIsNotReal        uint64 = 5001
 	codeRoleNameAlreadyExists uint64 = 5002
+	codeRoleIsNotActive       uint64 = 5003
+	codeRoleAlreadyAssigned   uint64 = 5004
+	codeRoleIsNotAssigned     uint64 = 5005
+
+	codeOnlyAdminCanEnableUser uint64 = 6000
+	codeUserAlreadyEnabled     uint64 = 6001
+	codeUserAlreadyDisabled    uint64 = 6002
 )

@@ -20,30 +20,50 @@ type User struct {
 	VerifiedAt *time.Time     `json:"verified_at" gorm:"type:timestamp;default:null;index:idx_verifier"`
 }
 
-func (u *User) AddRole(role string) {
+func (u *User) AddRole(userId uuid.UUID, role string) {
 	u.Roles = append(u.Roles, role)
+	u.Audit.UpdatedBy = &userId
 }
 
-func (u *User) RemoveRole(role string) {
+func (u *User) CheckRole(role string) bool {
+	for _, r := range u.Roles {
+		if r == role {
+			return true
+		}
+	}
+	return false
+}
+
+func (u *User) RemoveRole(userId uuid.UUID, role string) {
 	for i, r := range u.Roles {
 		if r == role {
 			u.Roles = append(u.Roles[:i], u.Roles[i+1:]...)
 			break
 		}
 	}
+	u.Audit.UpdatedBy = &userId
 }
 
 func (u *User) Verify() {
 	u.VerifiedAt = ptr.Time(time.Now())
+	u.IsActive = true
 	u.TempToken = nil
 }
 
-func (u *User) Enable() {
-	u.IsActive = true
+func (u *User) UnVerify() {
+	u.VerifiedAt = nil
+	u.IsActive = false
+	u.TempToken = ptr.String(uuid.New().String())
 }
 
-func (u *User) Disable() {
+func (u *User) Enable(userId uuid.UUID) {
+	u.IsActive = true
+	u.Audit.UpdatedBy = &userId
+}
+
+func (u *User) Disable(userId uuid.UUID) {
 	u.IsActive = false
+	u.Audit.UpdatedBy = &userId
 }
 
 func NewUser(name string, email string) *User {
