@@ -1,0 +1,23 @@
+{
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.8.1",
+    "@astrojs/preact": "^3.5.0",
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^4.11.5",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "preact": "^10.22.1",
+    "tailwindcss": "^3.4.6",
+    "typescript": "^5.5.3"
+  }
+}

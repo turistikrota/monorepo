@@ -1,0 +1,10 @@
+**/*/.DS_Store
+**/*/.env
+**/*/node_modules
+**/*/build
+**/*/dist
+**/*/*.lock
+.DS_Store
+temp
+**/*/*.key
+**/*/*.pub

@@ -1,0 +1,77 @@
+name: turistikrota
+services:
+  db:
+    image: "postgres:14.5"
+    env_file:
+      - .env
+    volumes:
+      - ../temp/db:/var/lib/postgresql/data
+    networks:
+      - turistikrota-compose
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    networks:
+      - turistikrota-compose
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    restart: always
+    ports:
+      - "16686:16686"
+      - "14268"
+      - "14250"
+    networks:
+      - turistikrota-compose
+
+  zipkin:
+    image: openzipkin/zipkin:latest
+    environment:
+      - JAVA_OPTS=-Xms1024m -Xmx1024m -XX:+ExitOnOutOfMemoryError
+    restart: always
+    ports:
+      - "9411:9411"
+    networks:
+      - turistikrota-compose
+
+  otel-collector:
+    image: otel/opentelemetry-collector:0.88.0
+    restart: always
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "1888:1888" # pprof extension
+      - "8888:8888" # Prometheus metrics exposed by the collector
+      - "8889:8889" # Prometheus exporter metrics
+      - "13133:13133" # health_check extension
+      - "4317:4317" # OTLP gRPC receiver
+      - "55679:55679" # zpages extension
+    depends_on:
+      - jaeger
+      - zipkin
+    networks:
+      - turistikrota-compose
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - turistikrota-compose
+
+networks:
+  turistikrota-compose:
+    name: turistikrota
+    external: true
