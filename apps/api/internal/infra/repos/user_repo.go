@@ -96,12 +96,5 @@ func (r *userRepo) Filter(ctx context.Context, req *list.PagiRequest, search str
 	if err := query.Limit(*req.Limit).Offset(req.Offset()).Find(&users).Error; err != nil {
 		return nil, rescode.Failed(err)
 	}
-	return &list.PagiResponse[*entities.User]{
-		List:          users,
-		Total:         total,
-		Limit:         *req.Limit,
-		TotalPage:     req.TotalPage(filteredTotal),
-		FilteredTotal: filteredTotal,
-		Page:          *req.Page,
-	}, nil
+	return list.NewPagiResponse(req, users, total, filteredTotal), nil
 }

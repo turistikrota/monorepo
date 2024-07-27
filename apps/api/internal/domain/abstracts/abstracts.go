@@ -7,11 +7,31 @@ import (
 	"github.com/google/uuid"
 	"github.com/turistikrota/api/internal/domain/aggregates"
 	"github.com/turistikrota/api/internal/domain/entities"
+	"github.com/turistikrota/api/internal/domain/valobj"
 	"github.com/turistikrota/api/pkg/list"
 )
 
 type TxnAdapterRepo interface {
 	GetTxnAdapter() txn.Adapter
+}
+
+type PlaceRepo interface {
+	TxnAdapterRepo
+
+	Save(ctx context.Context, place *entities.Place) error
+	IsExistsBySlug(ctx context.Context, slug string) (bool, error)
+	FindBySlug(ctx context.Context, slug string) (*entities.Place, error)
+	FindById(ctx context.Context, id uuid.UUID) (*entities.Place, error)
+	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.PlaceFilters) (*list.PagiResponse[*entities.Place], error)
+}
+
+type PlaceFeatureRepo interface {
+	TxnAdapterRepo
+
+	Save(ctx context.Context, feature *entities.PlaceFeature) error
+	FindById(ctx context.Context, id uuid.UUID) (*entities.PlaceFeature, error)
+	FindByIds(ctx context.Context, ids []uuid.UUID) ([]*entities.PlaceFeature, error)
+	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.PlaceFeature], error)
 }
 
 type UserRepo interface {
