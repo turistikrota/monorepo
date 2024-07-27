@@ -14,6 +14,11 @@ type Handlers struct {
 	PlaceFeatureAdminList PlaceFeatureAdminListHandler
 	PlaceFeatureAdminView PlaceFeatureAdminViewHandler
 	PlaceFeatureList      PlaceFeatureListHandler
+
+	PlaceAdminList PlaceAdminListHandler
+	PlaceAdminView PlaceAdminViewHandler
+	PlaceList      PlaceListHandler
+	PlaceView      PlaceViewHandler
 }
 
 func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Service) Handlers {
@@ -25,5 +30,10 @@ func NewHandler(tracer trace.Tracer, r abstracts.Repositories, v validation.Serv
 		PlaceFeatureAdminList: NewPlaceFeatureAdminListHandler(tracer, v, r.PlaceFeatureRepo),
 		PlaceFeatureAdminView: NewPlaceFeatureAdminViewHandler(tracer, v, r.PlaceFeatureRepo),
 		PlaceFeatureList:      NewPlaceFeatureListHandler(tracer, v, r.PlaceFeatureRepo),
+
+		PlaceAdminList: NewPlaceAdminListHandler(tracer, v, r.PlaceRepo),
+		PlaceAdminView: NewPlaceAdminViewHandler(tracer, v, r.PlaceRepo),
+		PlaceList:      NewPlaceListHandler(tracer, v, r.PlaceRepo),
+		PlaceView:      NewPlaceViewHandler(tracer, v, r.PlaceRepo),
 	}
 }

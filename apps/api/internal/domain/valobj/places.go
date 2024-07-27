@@ -35,5 +35,6 @@ type PlaceFilters struct {
 	Kind         string `query:"kind" validate:"omitempty,oneof=eating coffee bar beach amaze shopping transport culture nature health sport nightlife garden temple museum antique park themePark other"`
 	MinTimeSpent string `query:"min_time_spent" validate:"omitempty,numeric"`
 	MaxTimeSpent string `query:"max_time_spent" validate:"omitempty,numeric"`
-	IsPayed      string `query:"is_payed" validate:"omitempty,boolean"`
+	IsPayed      string `query:"is_payed" validate:"omitempty,oneof=0 1"`
+	IsActive     string `query:"is_active" validate:"omitempty,oneof=0 1"`
 }

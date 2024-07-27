@@ -72,6 +72,11 @@ func (r *placeRepo) Filter(ctx context.Context, req *list.PagiRequest, filters *
 			Skip:   filters.IsPayed == "",
 		},
 		{
+			Key:    "is_active = ?",
+			Values: []interface{}{filters.IsActive == "1"},
+			Skip:   filters.IsActive == "",
+		},
+		{
 			Key:    "kind = ?",
 			Values: []interface{}{filters.Kind},
 			Skip:   filters.Kind == "",
