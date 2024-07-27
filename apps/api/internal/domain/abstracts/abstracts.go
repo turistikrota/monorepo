@@ -61,7 +61,9 @@ type VerifyRepo interface {
 }
 
 type Repositories struct {
-	VerifyRepo  VerifyRepo
-	SessionRepo SessionRepo
-	UserRepo    UserRepo
+	VerifyRepo       VerifyRepo
+	SessionRepo      SessionRepo
+	UserRepo         UserRepo
+	PlaceRepo        PlaceRepo
+	PlaceFeatureRepo PlaceFeatureRepo
 }

@@ -24,12 +24,14 @@ type Place struct {
 	IsPayed      bool                            `json:"is_payed" gorm:"type:boolean;not null;default:false"`
 }
 
-func (p *Place) Enable() {
+func (p *Place) Enable(userId uuid.UUID) {
 	p.IsActive = true
+	p.Audit.UpdatedBy = &userId
 }
 
-func (p *Place) Disable() {
+func (p *Place) Disable(userId uuid.UUID) {
 	p.IsActive = false
+	p.Audit.UpdatedBy = &userId
 }
 
 func (p *Place) Update(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, points []float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) {

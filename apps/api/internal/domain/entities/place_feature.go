@@ -14,12 +14,14 @@ type PlaceFeature struct {
 	IsActive    bool   `json:"is_active" gorm:"type:boolean;not null;default:true"`
 }
 
-func (p *PlaceFeature) Enable() {
+func (p *PlaceFeature) Enable(userId uuid.UUID) {
 	p.IsActive = true
+	p.Audit.UpdatedBy = &userId
 }
 
-func (p *PlaceFeature) Disable() {
+func (p *PlaceFeature) Disable(userId uuid.UUID) {
 	p.IsActive = false
+	p.Audit.UpdatedBy = &userId
 }
 
 func (p *PlaceFeature) Update(adminId uuid.UUID, title string, description string, icon string) {

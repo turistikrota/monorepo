@@ -69,9 +69,11 @@ func init() {
 		seeds.Run(pgdb)
 	}
 	reps = abstracts.Repositories{
-		UserRepo:    repos.NewUserRepo(pgdb),
-		SessionRepo: repos.NewSessionRepo(rdclient),
-		VerifyRepo:  repos.NewVerifyRepo(rdclient),
+		UserRepo:         repos.NewUserRepo(pgdb),
+		SessionRepo:      repos.NewSessionRepo(rdclient),
+		VerifyRepo:       repos.NewVerifyRepo(rdclient),
+		PlaceRepo:        repos.NewPlaceRepo(pgdb),
+		PlaceFeatureRepo: repos.NewPlaceFeatureRepo(pgdb),
 	}
 
 	valSrv = validation.New()
