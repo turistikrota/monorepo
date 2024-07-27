@@ -55,12 +55,12 @@ func (r *placeFeatureRepo) Filter(ctx context.Context, req *list.PagiRequest, fi
 	conds := []query.Item{
 		{
 			Key:    "title ILIKE ?",
-			Values: []interface{}{"%" + filters.Search + "%"},
+			Values: query.V{"%" + filters.Search + "%"},
 			Skip:   filters.Search == "",
 		},
 		{
 			Key:    "is_active = ?",
-			Values: []interface{}{filters.IsActive == "1"},
+			Values: query.V{filters.IsActive == "1"},
 			Skip:   filters.IsActive == "",
 		},
 	}

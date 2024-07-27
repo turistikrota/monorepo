@@ -1,14 +1,16 @@
 package query
 
+type V []interface{}
+
 type Item struct {
 	Key    string
-	Values []interface{}
+	Values V
 	Skip   bool
 }
 
-func Build(items []Item) (string, []interface{}) {
+func Build(items []Item) (string, V) {
 	var query string
-	var values []interface{}
+	var values V
 	for _, item := range items {
 		if item.Skip {
 			continue

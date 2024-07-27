@@ -25,6 +25,14 @@ type PlaceRepo interface {
 	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.PlaceFilters) (*list.PagiResponse[*entities.Place], error)
 }
 
+type RoleRepo interface {
+	TxnAdapterRepo
+
+	Save(ctx context.Context, role *entities.Role) error
+	FindById(ctx context.Context, id uuid.UUID) (*entities.Role, error)
+	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.Role], error)
+}
+
 type PlaceFeatureRepo interface {
 	TxnAdapterRepo
 
