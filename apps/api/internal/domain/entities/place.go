@@ -10,7 +10,7 @@ import (
 type Place struct {
 	Base
 	valobj.Audit
-	FeatureUUIDs valobj.UUIDArray                `json:"feature_uuids" gorm:"column:feature_uuids;type:jsonb;not null"`
+	FeatureIds   valobj.UUIDArray                `json:"feature_ids" gorm:"column:feature_uuids;type:jsonb;not null"`
 	Title        string                          `json:"title" gorm:"column:title;type:varchar(255);not null"`
 	Description  string                          `json:"description" gorm:"column:description;type:text;not null"`
 	Slug         string                          `json:"slug" gorm:"column:slug;type:varchar(255);not null"`
@@ -36,7 +36,7 @@ func (p *Place) Disable(userId uuid.UUID) {
 
 func (p *Place) Update(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, title string, description string, seo valobj.Seo, points []float64, images []*valobj.Image, minTimeSpent int16, maxTimeSpent int16, isPayed bool) {
 	p.Slug = slug.New(seo.Title, slug.TR)
-	p.FeatureUUIDs = valobj.UUIDArray(featureIds)
+	p.FeatureIds = valobj.UUIDArray(featureIds)
 	p.Title = title
 	p.Description = description
 	p.Kind = kind
@@ -54,7 +54,7 @@ func NewPlace(adminId uuid.UUID, featureIds []uuid.UUID, kind valobj.PlaceKind, 
 		Audit: valobj.Audit{
 			MakedBy: &adminId,
 		},
-		FeatureUUIDs: valobj.UUIDArray(featureIds),
+		FeatureIds:   valobj.UUIDArray(featureIds),
 		Title:        title,
 		Description:  description,
 		Slug:         slug.New(seo.Title, slug.TR),
