@@ -31,5 +31,7 @@ const (
 	codeAccountTransferToSameAccount uint64 = 4003
 	codeAccountCurrencyMismatch      uint64 = 4004
 
-	codeRoleIsLocked uint64 = 5000
+	codeRoleIsLocked          uint64 = 5000
+	codeClaimIsNotReal        uint64 = 5001
+	codeRoleNameAlreadyExists uint64 = 5002
 )

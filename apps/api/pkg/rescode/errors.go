@@ -40,5 +40,9 @@ var (
 	AccountTransferToSameAccount = New(codeAccountTransferToSameAccount, http.StatusBadRequest, msgAccountTransferToSameAccount)
 	AccountCurrencyMismatch      = New(codeAccountCurrencyMismatch, http.StatusBadRequest, msgAccountCurrencyMismatch)
 
-	RoleIsLocked = New(codeRoleIsLocked, http.StatusForbidden, msgRoleIsLocked)
+	RoleIsLocked          = New(codeRoleIsLocked, http.StatusForbidden, msgRoleIsLocked)
+	ClaimIsNotReal        = New(codeClaimIsNotReal, http.StatusForbidden, msgClaimIsNotReal)
+	RoleNameAlreadyExists = New(codeRoleNameAlreadyExists, http.StatusConflict, msgRoleNameAlreadyExists, R{
+		"isExists": true,
+	})
 )

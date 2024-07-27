@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/turistikrota/api/api/rest/middlewares"
 	restsrv "github.com/turistikrota/api/api/rest/srv"
+	"github.com/turistikrota/api/config/claims"
 	"github.com/turistikrota/api/internal/app"
 	"github.com/turistikrota/api/internal/app/commands"
 	"github.com/turistikrota/api/internal/app/queries"
@@ -13,13 +14,13 @@ import (
 
 func Places(router fiber.Router, srv restsrv.Srv, app app.App) {
 	group := router.Group("/places")
-	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeCreate(app)))
-	group.Put("/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeUpdate(app)))
-	group.Patch("/:place_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeDisable(app)))
-	group.Patch("/:place_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeEnable(app)))
+	group.Post("/", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.Create), srv.Timeout(placeCreate(app)))
+	group.Put("/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.Update), srv.Timeout(placeUpdate(app)))
+	group.Patch("/:place_id/disable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.Disable), srv.Timeout(placeDisable(app)))
+	group.Patch("/:place_id/enable", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.Enable), srv.Timeout(placeEnable(app)))
 	group.Get("/", srv.Timeout(placeList(app)))
-	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeAdminList(app)))
-	group.Get("/admin/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.Timeout(placeAdminView(app)))
+	group.Get("/admin", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.List), srv.Timeout(placeAdminList(app)))
+	group.Get("/admin/:place_id", srv.AccessInit(), srv.AccessRequired(), srv.ClaimGuard(claims.Place.Super, claims.Place.View), srv.Timeout(placeAdminView(app)))
 	group.Get("/:slug", srv.Timeout(placeView(app)))
 }
 

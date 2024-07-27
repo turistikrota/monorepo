@@ -35,6 +35,14 @@ func (r *roleRepo) Save(ctx context.Context, role *entities.Role) error {
 	return nil
 }
 
+func (r *roleRepo) IsExistsByName(ctx context.Context, name string) (bool, error) {
+	var count int64
+	if err := r.adapter.GetCurrent(ctx).Model(&entities.Role{}).Where("name = ?", name).Count(&count).Error; err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
 func (r *roleRepo) FindById(ctx context.Context, id uuid.UUID) (*entities.Role, error) {
 	var role entities.Role
 	if err := r.adapter.GetCurrent(ctx).Model(&entities.Role{}).Where("id = ?", id).First(&role).Error; err != nil {

@@ -29,6 +29,7 @@ type RoleRepo interface {
 	TxnAdapterRepo
 
 	Save(ctx context.Context, role *entities.Role) error
+	IsExistsByName(ctx context.Context, name string) (bool, error)
 	FindById(ctx context.Context, id uuid.UUID) (*entities.Role, error)
 	FindByIds(ctx context.Context, ids []uuid.UUID) ([]*entities.Role, error)
 	Filter(ctx context.Context, req *list.PagiRequest, filters *valobj.BaseFilters) (*list.PagiResponse[*entities.Role], error)

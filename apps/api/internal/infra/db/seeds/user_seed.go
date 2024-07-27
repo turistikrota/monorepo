@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/lib/pq"
-	"github.com/turistikrota/api/config/roles"
 	"github.com/turistikrota/api/internal/domain/entities"
 	"github.com/turistikrota/api/pkg/ptr"
 	"gorm.io/gorm"
@@ -12,13 +11,14 @@ import (
 
 func runUserSeeds(db *gorm.DB) {
 	var user entities.User
-	if err := db.Model(&entities.User{}).Where("email = ?", "test@test.com").First(&user).Error; err != nil {
+	var role entities.Role
+	db.Model(&entities.Role{}).Select("id").Where("name = ?", "Admin").First(&role)
+	if err := db.Model(&entities.User{}).Where("email = ?", "test@test.com").First(&user).Error; err == gorm.ErrRecordNotFound {
 		db.Create(&entities.User{
 			Email: "test@test.com",
 			Name:  "Test",
 			Roles: pq.StringArray{
-				roles.Admin,
-				roles.AdminSuper,
+				role.Id.String(),
 			},
 			IsActive:   true,
 			VerifiedAt: ptr.Time(time.Now()),

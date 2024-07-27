@@ -12,7 +12,7 @@ import (
 	"github.com/mileusna/useragent"
 	"github.com/turistikrota/api/api/rest/middlewares"
 	"github.com/turistikrota/api/config"
-	"github.com/turistikrota/api/config/roles"
+	"github.com/turistikrota/api/config/claims"
 	"github.com/turistikrota/api/internal/app"
 	"github.com/turistikrota/api/internal/domain/valobj"
 	"github.com/turistikrota/api/pkg/rescode"
@@ -155,11 +155,11 @@ func (h srv) VerifyTokenExcluded() fiber.Handler {
 }
 
 func (h srv) ClaimGuard(extra ...string) fiber.Handler {
-	claims := []string{roles.AdminSuper}
+	c := []string{claims.AdminSuper, claims.Admin}
 	if len(extra) > 0 {
-		claims = append(claims, extra...)
+		c = append(c, extra...)
 	}
-	return middlewares.NewClaimGuard(claims)
+	return middlewares.NewClaimGuard(h.app, c)
 }
 
 func (h srv) MakeDevice(ctx *fiber.Ctx) *valobj.Device {

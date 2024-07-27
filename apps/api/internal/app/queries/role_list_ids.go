@@ -13,7 +13,7 @@ import (
 )
 
 type RoleListIds struct {
-	Ids []uuid.UUID `json:"role_ids" validate:"required,gt=0,dive,uuid"`
+	Ids []string `json:"role_ids" validate:"required,gt=0,dive,uuid"`
 }
 
 type RoleListIdsHandler cqrs.HandlerFunc[RoleListIds, []*entities.Role]
@@ -25,7 +25,15 @@ func NewRoleListIdsHandler(t trace.Tracer, v validation.Service, roleRepo abstra
 		if err != nil {
 			return nil, err
 		}
-		res, err := roleRepo.FindByIds(ctx, query.Ids)
+		ids := make([]uuid.UUID, 0, len(query.Ids))
+		for _, id := range query.Ids {
+			uid, err := uuid.Parse(id)
+			if err != nil {
+				return nil, err
+			}
+			ids = append(ids, uid)
+		}
+		res, err := roleRepo.FindByIds(ctx, ids)
 		if err != nil {
 			return nil, err
 		}

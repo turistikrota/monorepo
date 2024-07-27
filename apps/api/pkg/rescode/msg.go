@@ -31,5 +31,7 @@ const (
 	msgAccountTransferToSameAccount string = "account_transfer_to_same_account"
 	msgAccountCurrencyMismatch      string = "account_currency_mismatch"
 
-	msgRoleIsLocked string = "role_is_locked"
+	msgRoleIsLocked          string = "role_is_locked"
+	msgClaimIsNotReal        string = "claim_is_not_real"
+	msgRoleNameAlreadyExists string = "role_name_already_exists"
 )
